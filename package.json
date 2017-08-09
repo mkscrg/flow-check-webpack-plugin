@@ -1,0 +1,23 @@
+{
+  "name": "flow-check-webpack-plugin",
+  "version": "0.0.0",
+  "description": "",
+  "author": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint src",
+    "build": "./node_modules/.bin/babel src --out-dir dist"
+  },
+  "peerDependencies": {
+    "flow-bin": ">=0.52.0 <1",
+    "webpack": "3.x"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^4.4.1",
+    "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-plugin-import": "^2.7.0"
+  }
+}
