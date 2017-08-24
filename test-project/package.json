@@ -1,0 +1,17 @@
+{
+  "name": "flow-check-webpack-plugin-test",
+  "version": "0.0.0",
+  "scripts": {
+    "once": "! ./node_modules/.bin/webpack",
+    "watch": "! ./node_modules/.bin/webpack --watch"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.52.0",
+    "flow-check-webpack-plugin": "file:..",
+    "identity-loader": "^1.0.1",
+    "webpack": "^3.5.2"
+  },
+  "dependencies": {
+    "left-pad": "^1.1.3"
+  }
+}

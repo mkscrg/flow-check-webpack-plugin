@@ -1,11 +1,34 @@
 ## flow-check-webpack-plugin
 
-Why are all of these things fucking busted? Fuck!
+[NPM](https://www.npmjs.com/package/flow-check-webpack-plugin)
 
-### `flow` exit codes
+- A Webpack plugin, not a loader. Use [`babel-loader`](https://www.npmjs.com/package/babel-loader)
+  to strip Flow syntax, or use the [comment syntax](https://flow.org/en/docs/types/comments/).
+- Run `check` for single-shot builds, and `server`/`status` for watch builds. Tear down the server
+  on exit.
+- Access `flow` via [`flow-bin`](https://www.npmjs.com/package/flow-bin).
+- _Just_ a Webpack plugin, no other glue or tape required.
+- Maintained. (For now! :wink:)
 
-As of `0.52.0`:
+```bash
+npm install --save-dev flow-check-webpack-plugin flow-bin webpack
+```
 
-- `12` no `.flowconfig`
-- `8` broken `.flowconfig`
-- `flow start: 11` server already running
+```js
+const FlowCheckWebpackPlugin = require('flow-check-webpack-plugin');
+
+module.exports = {
+  // ...
+  plugins: [
+    new FlowCheckWebpackPlugin()
+  ]
+};
+```
+
+### Contirbuting
+
+Doesn't work for you? Wish it did something different? Pull requests and issues welcome!
+
+```
+cd test-project && npm run once && npm run watch
+```
