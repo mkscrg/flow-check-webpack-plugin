@@ -25,7 +25,9 @@ module.exports = {
 };
 ```
 
-### Contirbuting
+![Example GIF](/example.gif "Example GIF")
+
+### Contributing
 
 Doesn't work for you? Wish it did something different? Pull requests and issues welcome!
 
