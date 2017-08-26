@@ -1,6 +1,6 @@
 {
   "name": "flow-check-webpack-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A reasonable Flow plugin for Webpack",
   "author": "Mike Craig <mike@mkscrg.net>",
   "repository": "mkscrg/flow-check-webpack-plugin",
