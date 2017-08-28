@@ -2,6 +2,30 @@ import childProcess from 'child_process';
 
 import flowBin from 'flow-bin';
 
+class RingBuffer {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.length = 0;
+    this.head = 0;
+    this.elements = new Array(this.capacity);
+  }
+
+  append(x) {
+    this.elements[this.head] = x;
+    this.head = (this.head + 1) % this.capacity;
+    this.length = Math.min(this.length + 1, this.capacity);
+  }
+
+  contents() {
+    const cts = new Array(this.length);
+    for (let i = 0; i < this.length; i += 1) {
+      const j = (this.head + i) % this.capacity;
+      cts[i] = this.elements[j];
+    }
+    return cts;
+  }
+}
+
 const flowServer = () =>
   new Promise((resolve, reject) => {
     let isResolved = false;
@@ -10,12 +34,11 @@ const flowServer = () =>
       stdio: ['ignore', 'ignore', 'pipe'],
     });
 
-    // TODO avoid piling this up forever
-    const stderrLines = [];
+    const stderrLines = new RingBuffer(10);
     serverProcess.stderr.on('data', (data) => {
       const lines = data.toString().split('\n').filter(l => l.trim().length > 0);
-      stderrLines.push(...lines);
       lines.forEach((l) => {
+        stderrLines.append(l);
         if (l.match(/\] Server is READY$/) != null) {
           isResolved = true;
           resolve(serverProcess.pid);
@@ -24,7 +47,7 @@ const flowServer = () =>
     });
 
     const onExit = (code) => {
-      const stderr = stderrLines.map(l => `  >>${l}`).join('\n');
+      const stderr = stderrLines.contents().map(l => `  >>${l}`).join('\n');
       if (!isResolved) {
         reject(new Error(`flow server exited during startup (${code})\n${stderr}`));
       } else {
