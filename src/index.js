@@ -2,11 +2,6 @@ import childProcess from 'child_process';
 
 import flowBin from 'flow-bin';
 
-// TODO cleanup
-// - drop global handler
-// - back to import/export
-// - back to babel
-
 const flowServer = () =>
   new Promise((resolve, reject) => {
     let isResolved = false;
@@ -67,9 +62,23 @@ const parseErrors = (error, stdout, stderr) => {
 
   const flowErrors = stdout
     .split('\u001B[31;1mError:')
-    .map(s => s.replace(/^(\u001B\[0m|\s)*/, '').replace(/(\u001B\[0m|\s)*$/, ''))
-    .filter(s => s.length > 0)
-    .map(s => `\u001B[0m${s}\u001B[0m`);
+    .map((errStr) => {
+      const l1 = errStr.indexOf('\n');
+      const fname = errStr.substring(0, l1)
+        .replace(/\u001B\[[0-9;]*m/g, '')
+        .trim()
+        .replace(/:\d+$/, '');
+      const errMsg = errStr.substring(l1 + 1)
+        .replace(/Found \d+ errors?/, '')
+        .replace(/^(\u001B\[0m|\s)*/, '')
+        .replace(/(\u001B\[0m|\s)*$/, '');
+
+      if (fname === '' || errMsg === '') {
+        return '';
+      }
+      return `${fname}\n\u001B[0m${errMsg}\u001B[0m`;
+    })
+    .filter(s => s.length > 0);
   return { flowErrors };
 };
 
