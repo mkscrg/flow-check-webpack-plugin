@@ -136,4 +136,5 @@ FlowCheckWebpackPlugin.prototype.apply = (compiler) => {
   });
 };
 
-export default FlowCheckWebpackPlugin;
+module.exports = FlowCheckWebpackPlugin;
+module.exports.default = FlowCheckWebpackPlugin;
